@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>個人的に断念した球種ランキング</title>
+    <title>Good-and-New 20260618</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header>
-        <h1>何度も挑戦したけど、<br>投げるのが難しくて断念した球種ランキング</h1>
+    <div class="cover" id="cover">
+        <h1>試合で使いこなせなかった</br>球種ランキング</h1>
+        <button id="startBtn" onclick="startPresentation()">発表を始める</button>
+    </div>
+
+    <header class="hidden">
+        <h1>試合で使いこなせなかった</br>球種ランキング</h1>
     </header>
 
-    <div class="container">
+    <div class="container hidden">
         <div class="tech-note" id="techNote">
         </div>
 
@@ -27,7 +32,8 @@
 
             <p class="reason-title">【断念した理由】</p>
             <p class="reason-text">
-                形としては投げられるものの、軟式ボールだと回転がうまくかからないのか、全く曲がらない・落ちない。ただの「少し遅くて絶好球のストレート」になってしまいました。
+                シュート方向に変化する想像がつかないです<br>
+                ただの「少し遅くて絶好球のストレート」になってしまいました
             </p>
         </div>
 
@@ -42,7 +48,8 @@
 
             <p class="reason-title">【断念した理由】</p>
             <p class="reason-text">
-                圧倒的な握力不足。指の間に挟んでもスッポ抜けてしまい、どこに飛んでいくか分からないため、とてもじゃないですが怖くて試合では使えませんでした。
+                握力が足りないのかボールが抜けてしまいます<br>
+                重要なカウントでの決め球として使いたいのに・・・
             </p>
         </div>
 
@@ -57,7 +64,9 @@
 
             <p class="reason-title">【断念した理由】</p>
             <p class="reason-text">
-                ストレートは人差し指と中指を使って投げます。ただ、この変化球は薬指と小指もメインに使わなければならず、最後までコントロールがつきませんでした。
+                多くの変化球は人差し指と中指を使って投げます<br>
+                ただ、サークルチェンジは薬指と小指もメインに使わなければならず、<br>
+                コントロールするのが困難でした
             </p>
         </div>
 
@@ -66,36 +75,41 @@
         </div>
     </div>
 
-    <footer>
+    <footer class="hidden">
         <p>© 2026 朝会Good and New | Powered by GitHub Pages</p>
     </footer>
 
     <script>
         let currentRank = 3;
 
+        function startPresentation() {
+            document.getElementById('cover').classList.add('hidden');
+            document.querySelector('header').classList.remove('hidden');
+            document.querySelector('.container').classList.remove('hidden');
+            document.querySelector('footer').classList.remove('hidden');
+        }
+
         function nextRank() {
-            const currentCard = document.getElementById(`card-${currentRank}`);
             const nextBtn = document.getElementById('nextBtn');
-            
-            currentCard.classList.remove('active');
-            currentRank--;
-            
-            if (currentRank >= 1) {
-                const nextCard = document.getElementById(`card-${currentRank}`);
-                setTimeout(() => {
-                    nextCard.classList.add('active');
-                }, 50);
+            const prevCard = document.getElementById(`card-${currentRank}`);
+            const newRank = currentRank - 1;
+
+            if (newRank >= 1) {
+                const nextCard = document.getElementById(`card-${newRank}`);
+                nextCard.classList.add('active');
+                if (prevCard) prevCard.classList.remove('active');
+                currentRank = newRank;
+            } else {
+                if (prevCard) prevCard.classList.remove('active');
+                currentRank = newRank;
             }
 
-            if (currentRank === 2) {
-                nextBtn.innerText = "いよいよ第1位へ！";
-            } else if (currentRank === 1) {
-                nextBtn.innerText = "発表を終了する";
-            } else {
+            if (currentRank === 2) nextBtn.innerText = "いよいよ第1位へ！";
+            else if (currentRank === 1) nextBtn.innerText = "発表を終了する";
+            else if (currentRank < 1) {
                 document.getElementById('techNote').style.display = 'none';
                 nextBtn.disabled = true;
                 nextBtn.innerText = "ご清聴ありがとうございました！";
-                
                 const container = document.querySelector('.container');
                 const endMessage = document.createElement('div');
                 endMessage.className = 'end-message';
